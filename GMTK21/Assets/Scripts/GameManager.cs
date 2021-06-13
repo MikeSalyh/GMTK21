@@ -10,8 +10,14 @@ public class GameManager : MonoBehaviour
         Firing
     }
 
+    public const int SCREENWIDTH = 600, SCREENHEIGHT = 600; //forgive me for this sin.
+
     public State currentState = State.Aiming;
     public CursorFollowLauncher cursor;
+    public GameObject shotFab;
+    public Transform shotParent;
+
+    private Bullet currentBullet;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +50,13 @@ public class GameManager : MonoBehaviour
     {
         currentState = State.Firing;
         Debug.Log("Shooting!");
+
+        //Spawn a new bullet:
+        currentBullet = GameObject.Instantiate(shotFab, shotParent).GetComponent<Bullet>();
+        currentBullet.transform.localPosition = Vector3.zero;
+
+        currentBullet.Configure(cursor.transform.localPosition); 
+
         yield return new WaitForSeconds(1f);
         currentState = State.Aiming;
     }

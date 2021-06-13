@@ -51,8 +51,5 @@ public class CursorFollowLauncher : MonoBehaviour
         lineRenderer.useWorldSpace = true;
 
         lineRenderer.startColor = lineRenderer.endColor = (ready? readyColor : notReadyColor);
-
-        //float width = lineRenderer.startWidth;
-        //lineRenderer.material.mainTextureScale = new Vector2(1f / width, 1.0f);
     }
 }
