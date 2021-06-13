@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
 
 
         cursor.colorMode = new Color(0.3207547f, 0.3207547f, 0.3207547f, 1f);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.3f);
 
         nextIsMatter = UnityEngine.Random.value > 0.5f;
         cursor.colorMode = nextIsMatter ? Color.white : Color.black;
