@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,18 +16,23 @@ public class GameManager : MonoBehaviour
 
     public State currentState = State.Aiming;
     public CursorFollowLauncher cursor;
-    public GameObject shotFab;
+    public GameObject shotFab, boomFab;
     public Transform shotParent;
 
     private Bullet currentBullet;
     public List<Bullet> allActive = new List<Bullet>();
+    public bool nextIsMatter = true;
+    public TextMeshProUGUI scoreTxt;
 
-    public Bullet.Type nextType;
+    public AudioClip shoot0, shoot1, combine, destroy;
+    private AudioSource src;
 
     // Start is called before the first frame update
     void Start()
     {
         Cursor.visible = false;
+        cursor.colorMode = Color.white;
+        src = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -56,18 +63,20 @@ public class GameManager : MonoBehaviour
         currentState = State.Firing;
         Debug.Log("Shooting!");
 
+        src.PlayOneShot(nextIsMatter? shoot0 : shoot1);
+
         //Spawn a new bullet:
         currentBullet = GameObject.Instantiate(shotFab, shotParent).GetComponent<Bullet>();
         currentBullet.transform.localPosition = Vector3.zero;
-        currentBullet.Configure(nextType, cursor.transform.localPosition);
+        currentBullet.Configure(nextIsMatter, cursor.transform.localPosition);
         allActive.Add(currentBullet);
-        cursor.colorMode = 3; //gray
 
+
+        cursor.colorMode = new Color(0.3207547f, 0.3207547f, 0.3207547f, 1f);
         yield return new WaitForSeconds(1f);
 
-        int nextColor = (Random.Range(0, 3));
-        nextType = (Bullet.Type)nextColor;
-        cursor.colorMode = nextColor;
+        nextIsMatter = UnityEngine.Random.value > 0.5f;
+        cursor.colorMode = nextIsMatter ? Color.white : Color.black;
         currentState = State.Aiming;
     }
 
@@ -88,13 +97,28 @@ public class GameManager : MonoBehaviour
 
                 if (rect1.Overlaps(rect2))
                 {
-                    allActive[j].flaggedForRemoval = true;
-                    allActive[i].Combine(allActive[j]);
-                    break;
+                    if (allActive[i].isMatter == allActive[j].isMatter)
+                    {
+                        allActive[j].flaggedForRemoval = true;
+                        allActive[i].Combine(allActive[j]);
+                        src.PlayOneShot(combine);
+                        break;
+                    }
+                    else
+                    {
+                        allActive[i].flaggedForRemoval = true;
+                        allActive[j].flaggedForRemoval = true;
+                        GameObject particles = GameObject.Instantiate(boomFab, shotParent);
+                        particles.transform.position = allActive[i].transform.position;
+                        Destroy(particles, 2f);
+                        src.PlayOneShot(destroy);
+                        break;
+                    }
                 }
             }
         }
 
+        int score = 0;
         for (int i = 0; i < allActive.Count; i++)
         {
             if (allActive[i].flaggedForRemoval)
@@ -102,6 +126,11 @@ public class GameManager : MonoBehaviour
                 GameObject.Destroy(allActive[i].gameObject);
                 allActive.RemoveAt(i);
             }
+            else
+            {
+                score += allActive[i].value;
+            }
         }
+        scoreTxt.text = score.ToString();
     }
 }

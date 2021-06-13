@@ -10,15 +10,9 @@ public class Bullet : WrappingObject
     public float minLaunchSpeed, maxLaunchSpeed;
     public bool flaggedForRemoval;
     public ParticleSystem collisionParticles, speedParticles;
-
-    public enum Type
-    {
-        Red,
-        Green,
-        Blue
-    }
-    public Color[] colors;
-    public Type myType;
+    
+    public bool isMatter;
+    public int value = 1;
 
 
     // Start is called before the first frame update
@@ -33,14 +27,14 @@ public class Bullet : WrappingObject
         transform.Translate(velocity * Time.deltaTime);
     }
 
-    public void Configure(Type t, Vector2 velocity)
+    public void Configure(bool isMatter, Vector2 velocity)
     {
-        this.myType = t;
-        GetComponent<RawImage>().color = colors[(int)t];
+        this.isMatter = isMatter;
+        GetComponent<RawImage>().color = isMatter ? Color.white : Color.black;
         var a = collisionParticles.main;
-        a.startColor = colors[(int)t];
+        a.startColor = isMatter ? Color.white : Color.black;
         var b = speedParticles.main;
-        b.startColor = colors[(int)t];
+        b.startColor = isMatter ? Color.white : Color.black;
 
 
         float a2 = (GameManager.SCREENHEIGHT / 2) * (GameManager.SCREENHEIGHT / 2);
@@ -79,5 +73,7 @@ public class Bullet : WrappingObject
                   new ParticleSystem.Burst(0f, theirArea / 50f)
         });
         collisionParticles.Play();
+
+        value += other.value;
     }
 }

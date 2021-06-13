@@ -9,8 +9,7 @@ public class CursorFollowLauncher : MonoBehaviour
     public LineRenderer lineRenderer;
     private Canvas myCanvas;
     public bool ready = true;
-    public Color[] colors;
-    public int colorMode;
+    public Color colorMode;
     public RawImage icon;
 
     // Start is called before the first frame update
@@ -47,7 +46,7 @@ public class CursorFollowLauncher : MonoBehaviour
         lineRenderer.SetPositions(pos.ToArray());
         lineRenderer.useWorldSpace = true;
 
-        lineRenderer.startColor = lineRenderer.endColor = colors[colorMode];
-        icon.color = colors[colorMode];
+        //lineRenderer.startColor = lineRenderer.endColor = colorMode];
+        icon.color = colorMode;
     }
 }
