@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public Transform shotParent;
 
     private Bullet currentBullet;
+    public List<Bullet> allActive = new List<Bullet>();
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +40,8 @@ public class GameManager : MonoBehaviour
         else if (currentState == State.Firing)
         {
         }
+
+        HandleCollisions();
     }
 
     private void Fire()
@@ -54,10 +57,43 @@ public class GameManager : MonoBehaviour
         //Spawn a new bullet:
         currentBullet = GameObject.Instantiate(shotFab, shotParent).GetComponent<Bullet>();
         currentBullet.transform.localPosition = Vector3.zero;
-
-        currentBullet.Configure(cursor.transform.localPosition); 
+        currentBullet.Configure(cursor.transform.localPosition);
+        allActive.Add(currentBullet);
 
         yield return new WaitForSeconds(1f);
         currentState = State.Aiming;
+    }
+
+    private void HandleCollisions()
+    {
+        //This is o(N^2), so don't make too many bullets for the love of god!
+        for (int i = 0; i < allActive.Count; i++)
+        {
+            for (int j = 0; j < allActive.Count; j++)
+            {
+                if (i == j) continue;
+
+                Rect rect1 = new Rect(allActive[i].rect.localPosition.x, allActive[i].rect.localPosition.y, allActive[i].rect.sizeDelta.x, allActive[i].rect.sizeDelta.y);
+                Rect rect2 = new Rect(allActive[j].rect.localPosition.x, allActive[j].rect.localPosition.y, allActive[j].rect.sizeDelta.x, allActive[j].rect.sizeDelta.y);
+
+                if (rect1.Overlaps(rect2))
+                {
+                    //collision!
+                    //Destroy i and add it to j. or something
+                    allActive[i].flaggedForRemoval = true;
+                    allActive[j].flaggedForRemoval = true;
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < allActive.Count; i++)
+        {
+            if (allActive[i].flaggedForRemoval)
+            {
+                GameObject.Destroy(allActive[i].gameObject);
+                allActive.RemoveAt(i);
+            }
+        }
     }
 }

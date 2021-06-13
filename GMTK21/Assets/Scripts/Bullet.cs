@@ -8,6 +8,8 @@ public class Bullet : WrappingObject
     public Vector2 velocity;
     public float minLaunchSpeed, maxLaunchSpeed;
 
+    public bool flaggedForRemoval = false;
+
     // Start is called before the first frame update
     void Start()
     {
