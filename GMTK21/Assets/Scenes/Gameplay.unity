@@ -438,8 +438,13 @@ MonoBehaviour:
   screenCenterPos: {fileID: 1009471526}
   lineRenderer: {fileID: 43441396}
   ready: 1
-  readyColor: {r: 1, g: 1, b: 1, a: 1}
-  notReadyColor: {r: 1, g: 1, b: 1, a: 0.20784314}
+  colors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 1, b: 0.15686275, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 0.2509804}
+  colorMode: 0
+  icon: {fileID: 547285400}
 --- !u!225 &547285403
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -486,6 +491,7 @@ MonoBehaviour:
   shotFab: {fileID: 461538609629500773, guid: 8fe3e5e060eb2ab45ba83f30af87a4c0, type: 3}
   shotParent: {fileID: 2033996269}
   allActive: []
+  nextType: 0
 --- !u!4 &589486676
 Transform:
   m_ObjectHideFlags: 0

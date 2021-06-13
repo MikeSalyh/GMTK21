@@ -1,22 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CursorFollowLauncher : MonoBehaviour
 {
     public GameObject screenCenterPos;
     public LineRenderer lineRenderer;
     private Canvas myCanvas;
-    private CanvasGroup cg;
     public bool ready = true;
-
-    public Color readyColor, notReadyColor;
+    public Color[] colors;
+    public int colorMode;
+    public RawImage icon;
 
     // Start is called before the first frame update
     void Start()
     {
         myCanvas = GetComponentInParent<Canvas>();
-        cg = GetComponent<CanvasGroup>();
     }
 
     // Update is called once per frame
@@ -30,9 +30,6 @@ public class CursorFollowLauncher : MonoBehaviour
         Vector2 pos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, Input.mousePosition, myCanvas.worldCamera, out pos);
         transform.position = myCanvas.transform.TransformPoint(pos);
-
-        //more graphics here
-        cg.alpha = ready ? 1f : 0.25f;
     }
 
     private void LateUpdate()
@@ -50,6 +47,7 @@ public class CursorFollowLauncher : MonoBehaviour
         lineRenderer.SetPositions(pos.ToArray());
         lineRenderer.useWorldSpace = true;
 
-        lineRenderer.startColor = lineRenderer.endColor = (ready? readyColor : notReadyColor);
+        lineRenderer.startColor = lineRenderer.endColor = colors[colorMode];
+        icon.color = colors[colorMode];
     }
 }

@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     private Bullet currentBullet;
     public List<Bullet> allActive = new List<Bullet>();
 
+    public Bullet.Type nextType;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,10 +59,15 @@ public class GameManager : MonoBehaviour
         //Spawn a new bullet:
         currentBullet = GameObject.Instantiate(shotFab, shotParent).GetComponent<Bullet>();
         currentBullet.transform.localPosition = Vector3.zero;
-        currentBullet.Configure(cursor.transform.localPosition);
+        currentBullet.Configure(nextType, cursor.transform.localPosition);
         allActive.Add(currentBullet);
+        cursor.colorMode = 3; //gray
 
         yield return new WaitForSeconds(1f);
+
+        int nextColor = (Random.Range(0, 3));
+        nextType = (Bullet.Type)nextColor;
+        cursor.colorMode = nextColor;
         currentState = State.Aiming;
     }
 

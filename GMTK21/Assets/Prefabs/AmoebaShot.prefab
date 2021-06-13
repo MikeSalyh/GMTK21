@@ -67,6 +67,11 @@ MonoBehaviour:
   flaggedForRemoval: 0
   collisionParticles: {fileID: 7194737155730484466}
   speedParticles: {fileID: 6826598894328912467}
+  colors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 1, b: 0.15566039, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  myType: 0
 --- !u!114 &1645602684881768449
 MonoBehaviour:
   m_ObjectHideFlags: 0
