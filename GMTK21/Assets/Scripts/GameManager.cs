@@ -69,19 +69,20 @@ public class GameManager : MonoBehaviour
         //This is o(N^2), so don't make too many bullets for the love of god!
         for (int i = 0; i < allActive.Count; i++)
         {
+            if (allActive[i].flaggedForRemoval) continue;
+
             for (int j = 0; j < allActive.Count; j++)
             {
                 if (i == j) continue;
+                if (allActive[j].flaggedForRemoval == true) continue;
 
                 Rect rect1 = new Rect(allActive[i].rect.localPosition.x, allActive[i].rect.localPosition.y, allActive[i].rect.sizeDelta.x, allActive[i].rect.sizeDelta.y);
                 Rect rect2 = new Rect(allActive[j].rect.localPosition.x, allActive[j].rect.localPosition.y, allActive[j].rect.sizeDelta.x, allActive[j].rect.sizeDelta.y);
 
                 if (rect1.Overlaps(rect2))
                 {
-                    //collision!
-                    //Destroy i and add it to j. or something
-                    allActive[i].flaggedForRemoval = true;
                     allActive[j].flaggedForRemoval = true;
+                    allActive[i].Combine(allActive[j]);
                     break;
                 }
             }
