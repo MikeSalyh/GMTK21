@@ -408,7 +408,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 9a91aeb54354290438ffecc4a1f09985, type: 3}
+  m_Texture: {fileID: 2800000, guid: 6f64a9bb7c7ea514d911f44333cc569b, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -485,6 +485,7 @@ MonoBehaviour:
   cursor: {fileID: 547285402}
   shotFab: {fileID: 461538609629500773, guid: 8fe3e5e060eb2ab45ba83f30af87a4c0, type: 3}
   shotParent: {fileID: 2033996269}
+  allActive: []
 --- !u!4 &589486676
 Transform:
   m_ObjectHideFlags: 0

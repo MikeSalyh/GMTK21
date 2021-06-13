@@ -21,19 +21,23 @@ public class WrappingObject : MonoBehaviour
         if (rect.localPosition.y > GameManager.SCREENHEIGHT / 2 + Radius)
         {
             newPos.y = (-GameManager.SCREENHEIGHT / 2) - Radius;
+            newPos.x *= -1;
         }
         else if (rect.localPosition.y < -GameManager.SCREENHEIGHT / 2 - Radius)
         {
             newPos.y = (GameManager.SCREENHEIGHT / 2) + Radius;
+            newPos.x *= -1;
         }
 
         if (rect.localPosition.x > GameManager.SCREENWIDTH / 2 + Radius)
         {
             newPos.x = (-GameManager.SCREENHEIGHT / 2) - Radius;
+            newPos.y *= -1;
         }
         else if (rect.localPosition.x < -GameManager.SCREENWIDTH / 2 - Radius)
         {
             newPos.x = (GameManager.SCREENWIDTH / 2) + Radius;
+            newPos.y *= -1;
         }
 
         rect.localPosition = newPos;

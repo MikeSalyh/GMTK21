@@ -8,6 +8,7 @@ public class Bullet : WrappingObject
     public Vector2 velocity;
     public float minLaunchSpeed, maxLaunchSpeed;
     public bool flaggedForRemoval;
+    public ParticleSystem collisionParticles, speedParticles;
 
     // Start is called before the first frame update
     void Start()
@@ -48,5 +49,16 @@ public class Bullet : WrappingObject
         Vector2 v2 = other.velocity * theirArea;
         Vector2 output = (v1 + v2) / (myArea + theirArea);
         velocity = output;
+
+        var a = speedParticles.emission;
+        a.rateOverTime = velocity.magnitude / 10f;
+
+        var b = collisionParticles.emission;
+
+        b.SetBursts(
+              new ParticleSystem.Burst[] {
+                  new ParticleSystem.Burst(0f, theirArea / 50f)
+        });
+        collisionParticles.Play();
     }
 }
