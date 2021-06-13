@@ -10,6 +10,8 @@ public class CursorFollowLauncher : MonoBehaviour
     private CanvasGroup cg;
     public bool ready = true;
 
+    public Color readyColor, notReadyColor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,11 +37,7 @@ public class CursorFollowLauncher : MonoBehaviour
 
     private void LateUpdate()
     {
-        lineRenderer.gameObject.SetActive(ready);
-        if (ready)
-        {
-            DrawLine();
-        }
+        DrawLine();
     }
 
     void DrawLine()
@@ -51,5 +49,10 @@ public class CursorFollowLauncher : MonoBehaviour
         lineRenderer.endWidth = 1f;
         lineRenderer.SetPositions(pos.ToArray());
         lineRenderer.useWorldSpace = true;
+
+        lineRenderer.startColor = lineRenderer.endColor = (ready? readyColor : notReadyColor);
+
+        //float width = lineRenderer.startWidth;
+        //lineRenderer.material.mainTextureScale = new Vector2(1f / width, 1.0f);
     }
 }
